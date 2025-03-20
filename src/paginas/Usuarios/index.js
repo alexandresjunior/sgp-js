@@ -7,8 +7,15 @@ function Usuarios() {
         <>
             <Cabecalho />
 
-            <section className="container" id="usuarios">
-                <h1>Usuarios Cadastrados</h1>
+            <section className="container mt-3" id="usuarios">
+                <div className="d-flex justify-content-between">
+                    <h1>Usuarios Cadastrados</h1>
+                    <div>
+                        <a role="button" href="/novo-usuario" className="btn btn-primary">
+                            Novo Usuario
+                        </a>
+                    </div>
+                </div>
 
                 <table className="table table-hover">
                     <thead>
@@ -33,7 +40,10 @@ function Usuarios() {
                                     <td>{usuario.idade}</td>
                                     <td>{usuario.status}</td>
                                     <td>
-
+                                        <div className="btn-group" role="group">
+                                            <button type="button" className="btn btn-primary">Editar</button>
+                                            <button type="button" className="btn btn-danger">Excluir</button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))

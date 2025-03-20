@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../paginas/Login";
 import Pagina404 from "../paginas/Pagina404";
 import Usuarios from "../paginas/Usuarios";
+import UsuarioForm from "../paginas/Usuarios/UsuarioForm";
 
 function Rotas() {
     return (
@@ -11,6 +12,7 @@ function Rotas() {
                 <Route path="/dashboard" element={<></>} />
                 {/* <Route path="/cadastro" element={<Cadastro />} /> */}
                 <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/novo-usuario" element={<UsuarioForm />} />
                 <Route path="/projetos" element={<></>} />
                 <Route path="/tarefas" element={<></>} />
                 <Route path="*" element={<Pagina404 />} />
