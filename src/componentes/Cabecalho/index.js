@@ -28,16 +28,16 @@ function Cabecalho() {
 
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link active" href="#">Dashboard</a>
+                            <a className="nav-link active" href="/dashboard">Dashboard</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Usuarios</a>
+                            <a className="nav-link" href="/usuarios">Usuarios</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Projetos</a>
+                            <a className="nav-link" href="/projetos">Projetos</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Tarefas</a>
+                            <a className="nav-link" href="/tarefas">Tarefas</a>
                         </li>
                     </ul>
 
