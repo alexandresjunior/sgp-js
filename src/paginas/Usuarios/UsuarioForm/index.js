@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cabecalho from "../../../componentes/Cabecalho";
 import Rodape from "../../../componentes/Rodape";
+import Modal from "../../../componentes/Modal";
 import { useNavigate } from "react-router-dom";
 
 function UsuarioForm() {
@@ -12,14 +13,22 @@ function UsuarioForm() {
     const [senha, setSenha] = useState("");
     const [dataNascimento, setDataNascimento] = useState("");
     const [status, setStatus] = useState("");
+    const [exibirModal, setExibirModal] = useState(false);
 
     const enviarFormulario = (e) => {
         e.preventDefault();
 
         console.log({ nome, cpf, email, senha, dataNascimento, status });
+
+        setExibirModal(true);
     }
 
     const cancelar = () => {
+        navigate("/usuarios");
+    }
+
+    const confirmarCadastro = () => {
+        setExibirModal(false);
         navigate("/usuarios");
     }
 
@@ -109,6 +118,15 @@ function UsuarioForm() {
                         <button className="btn btn-outline-primary ms-2" onClick={cancelar}>Cancelar</button>
                     </div>
                 </form>
+
+                {exibirModal && (
+                    <Modal
+                        titulo={"Confirmacao"}
+                        texto={"Usuario cadastrado com sucesso!"}
+                        txtBtn01={"OK"}
+                        onClickBtn01={confirmarCadastro}
+                    />
+                )}
             </section>
 
             <Rodape />
