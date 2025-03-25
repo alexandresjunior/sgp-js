@@ -1,8 +1,15 @@
+import { useEffect, useState } from "react";
 import Cabecalho from "../../componentes/Cabecalho";
 import Rodape from "../../componentes/Rodape";
-import { USUARIOS } from "../../mocks/usuarios";
+import { listarUsuarios } from "../../servicos/usuarios";
 
 function Usuarios() {
+    const [usuarios, setUsuarios] = useState([]);
+
+    useEffect(() => {
+        listarUsuarios(setUsuarios);
+    }, []);
+
     return (
         <>
             <Cabecalho />
@@ -31,7 +38,7 @@ function Usuarios() {
                     </thead>
                     <tbody>
                         {
-                            USUARIOS.map((usuario) => (
+                            usuarios?.map((usuario) => (
                                 <tr key={usuario.id}>
                                     <th scope="row">{usuario.id}</th>
                                     <td>{usuario.nome}</td>
