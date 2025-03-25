@@ -3,6 +3,8 @@ import Cabecalho from "../../../componentes/Cabecalho";
 import Rodape from "../../../componentes/Rodape";
 import Modal from "../../../componentes/Modal";
 import { useNavigate } from "react-router-dom";
+import { salvarUsuario } from "../../../servicos/usuarios";
+import { formatarData } from "../../../utils/data";
 
 function UsuarioForm() {
     const navigate = useNavigate();
@@ -15,12 +17,21 @@ function UsuarioForm() {
     const [status, setStatus] = useState("");
     const [exibirModal, setExibirModal] = useState(false);
 
-    const enviarFormulario = (e) => {
+    const enviarFormulario = async (e) => {
         e.preventDefault();
 
-        console.log({ nome, cpf, email, senha, dataNascimento, status });
+        const dadosUsuario = {
+            nome, 
+            cpf,
+            email,
+            senha,
+            dataNascimento: formatarData(dataNascimento),
+            status
+        }
 
-        setExibirModal(true);
+        console.log(dadosUsuario);
+
+        await salvarUsuario(dadosUsuario, setExibirModal);
     }
 
     const cancelar = () => {
