@@ -25,3 +25,29 @@ export async function listarUsuarios(setUsuarios) {
             console.error("Erro ao listar usuarios: ", erro);
         });
 }
+
+export async function obterUsuarioPeloId(
+    id,
+    setNome,
+    setCpf,
+    setDataNascimento,
+    setEmail,
+    setSenha,
+    setStatus
+) {
+    await api.get(`/usuarios/${id}`)
+        .then((resposta) => {
+            if (resposta.status === 200) {
+                setNome(resposta.data.nome);
+                setCpf(resposta.data.cpf);
+                setDataNascimento(resposta.data.dataNascimento);
+                setEmail(resposta.data.email);
+                setSenha(resposta.data.senha);
+                setStatus(resposta.data.status);
+            }
+        })
+        .catch((erro) => {
+            alert("Erro ao obter usuario.");
+            console.error("Erro ao obter usuario: ", erro);
+        });
+}

@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cabecalho from "../../../componentes/Cabecalho";
 import Rodape from "../../../componentes/Rodape";
 import Modal from "../../../componentes/Modal";
-import { useNavigate } from "react-router-dom";
-import { salvarUsuario } from "../../../servicos/usuarios";
+import { useNavigate, useParams } from "react-router-dom";
+import { obterUsuarioPeloId, salvarUsuario } from "../../../servicos/usuarios";
 import { formatarData } from "../../../utils/data";
 
 function UsuarioForm() {
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const [nome, setNome] = useState("");
     const [cpf, setCpf] = useState("");
@@ -16,6 +17,12 @@ function UsuarioForm() {
     const [dataNascimento, setDataNascimento] = useState("");
     const [status, setStatus] = useState("");
     const [exibirModal, setExibirModal] = useState(false);
+
+    useEffect(() => {
+        if (id) {
+            obterUsuarioPeloId(id, setNome, setCpf, setDataNascimento, setEmail, setSenha, setStatus);
+        }
+    }, []);
 
     const enviarFormulario = async (e) => {
         e.preventDefault();

@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Cabecalho from "../../componentes/Cabecalho";
 import Rodape from "../../componentes/Rodape";
 import { listarUsuarios } from "../../servicos/usuarios";
+import { useNavigate } from "react-router-dom";
 
 function Usuarios() {
+    const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
 
     useEffect(() => {
@@ -48,7 +50,13 @@ function Usuarios() {
                                     <td>{usuario.status}</td>
                                     <td>
                                         <div className="btn-group" role="group">
-                                            <button type="button" className="btn btn-primary">Editar</button>
+                                            <button 
+                                                type="button" 
+                                                className="btn btn-primary"
+                                                onClick={() => navigate(`/usuario/${usuario.id}`)}
+                                            >
+                                                Editar
+                                            </button>
                                             <button type="button" className="btn btn-danger">Excluir</button>
                                         </div>
                                     </td>
