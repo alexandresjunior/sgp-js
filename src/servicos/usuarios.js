@@ -64,3 +64,16 @@ export async function obterUsuarioPeloId(
             console.error("Erro ao obter usuario: ", erro);
         });
 }
+
+export async function excluirUsuarioPeloId(id, setExibirModal) {
+    await api.delete(`/usuarios/${id}`)
+        .then((resposta) => {
+            if (resposta.status === 204) {
+                setExibirModal(false);
+            }
+        })
+        .catch((erro) => {
+            alert("Erro ao excluir usuario.");
+            console.error("Erro ao excluir usuario: ", erro);
+        });
+}

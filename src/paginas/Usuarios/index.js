@@ -1,16 +1,36 @@
 import { useEffect, useState } from "react";
 import Cabecalho from "../../componentes/Cabecalho";
 import Rodape from "../../componentes/Rodape";
-import { listarUsuarios } from "../../servicos/usuarios";
+import { excluirUsuarioPeloId, listarUsuarios } from "../../servicos/usuarios";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../componentes/Modal";
 
 function Usuarios() {
     const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
+    const [exibirModal, setExibirModal] = useState(false);
+    const [usuarioParaExcluir, setUsuarioParaExcluir] = useState({});
 
     useEffect(() => {
         listarUsuarios(setUsuarios);
     }, []);
+
+    const confirmarExclusao = (id) => {
+        setExibirModal(true);
+        setUsuarioParaExcluir(id);
+    }
+
+    const cancelarExclusao = () => {
+        setExibirModal(false);
+        setUsuarioParaExcluir({});
+    }
+
+    const excluirUsuario = async () => {
+        await excluirUsuarioPeloId(usuarioParaExcluir, setExibirModal);
+
+        setUsuarioParaExcluir({});
+        setUsuarios(usuarios.filter(u => u.id !== usuarioParaExcluir));
+    }
 
     return (
         <>
@@ -50,14 +70,20 @@ function Usuarios() {
                                     <td>{usuario.status}</td>
                                     <td>
                                         <div className="btn-group" role="group">
-                                            <button 
-                                                type="button" 
+                                            <button
+                                                type="button"
                                                 className="btn btn-primary"
                                                 onClick={() => navigate(`/usuario/${usuario.id}`)}
                                             >
                                                 Editar
                                             </button>
-                                            <button type="button" className="btn btn-danger">Excluir</button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-danger"
+                                                onClick={() => confirmarExclusao(usuario.id)}
+                                            >
+                                                Excluir
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -66,6 +92,17 @@ function Usuarios() {
                     </tbody>
                 </table>
             </section>
+
+            {exibirModal && (
+                <Modal
+                    titulo={"Confirmacao de Exclusao"}
+                    texto={"Tem certeza que deseja excluir este usuario?"}
+                    txtBtn01={"Sim, excluir."}
+                    onClickBtn01={excluirUsuario}
+                    txtBtn02={"Cancelar"}
+                    onClickBtn02={cancelarExclusao}
+                />
+            )}
 
             <Rodape />
         </>
