@@ -13,6 +13,19 @@ export async function salvarUsuario(dadosUsuario, setExibirModal) {
         });
 }
 
+export async function atualizarUsuario(id, dadosUsuario, setExibirModal) {
+    await api.put(`/usuarios/${id}`, dadosUsuario)
+        .then((resposta) => {
+            if (resposta.status === 200) {
+                setExibirModal(true);
+            }
+        })
+        .catch((erro) => {
+            alert("Erro ao atualizar usuario.");
+            console.error("Erro ao atualizar usuario: ", erro);
+        });
+}
+
 export async function listarUsuarios(setUsuarios) {
     await api.get('/usuarios')
         .then((resposta) => {

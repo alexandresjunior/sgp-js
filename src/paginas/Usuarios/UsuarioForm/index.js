@@ -3,7 +3,7 @@ import Cabecalho from "../../../componentes/Cabecalho";
 import Rodape from "../../../componentes/Rodape";
 import Modal from "../../../componentes/Modal";
 import { useNavigate, useParams } from "react-router-dom";
-import { obterUsuarioPeloId, salvarUsuario } from "../../../servicos/usuarios";
+import { atualizarUsuario, obterUsuarioPeloId, salvarUsuario } from "../../../servicos/usuarios";
 import { formatarData } from "../../../utils/data";
 
 function UsuarioForm() {
@@ -38,7 +38,11 @@ function UsuarioForm() {
 
         console.log(dadosUsuario);
 
-        await salvarUsuario(dadosUsuario, setExibirModal);
+        if (id) {
+            await atualizarUsuario(id, dadosUsuario, setExibirModal);
+        } else {
+            await salvarUsuario(dadosUsuario, setExibirModal);
+        }
     }
 
     const cancelar = () => {
@@ -140,7 +144,7 @@ function UsuarioForm() {
                 {exibirModal && (
                     <Modal
                         titulo={"Confirmacao"}
-                        texto={"Usuario cadastrado com sucesso!"}
+                        texto={`Usuario ${id ? 'atualizado' : 'cadastrado'} com sucesso!`}
                         txtBtn01={"OK"}
                         onClickBtn01={confirmarCadastro}
                     />
