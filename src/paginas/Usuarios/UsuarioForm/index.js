@@ -28,7 +28,7 @@ function UsuarioForm() {
         e.preventDefault();
 
         const dadosUsuario = {
-            nome, 
+            nome,
             cpf,
             email,
             senha,
@@ -98,18 +98,22 @@ function UsuarioForm() {
                             required
                         />
                     </div>
-                    <div className="col-md-6 col-12">
-                        <label htmlFor="senha" className="form-label">Senha:</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="senha"
-                            placeholder="Digite aqui a sua senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                            required
-                        />
-                    </div>
+
+                    {!id && (
+                        <div className="col-md-6 col-12">
+                            <label htmlFor="senha" className="form-label">Senha:</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="senha"
+                                placeholder="Digite aqui a sua senha"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                                required
+                            />
+                        </div>
+                    )}
+
                     <div className="col-md-6 col-12">
                         <label htmlFor="dataNascimento" className="form-label">Data de Nascimento:</label>
                         <input
