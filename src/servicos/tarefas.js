@@ -41,12 +41,22 @@ export async function listarTarefas(setTarefas) {
 
 export async function obterTarefaPeloId(
     id,
-    setNome
+    setTitulo,
+    setDataCriacao,
+    setDataConclusao,
+    setPrioridade,
+    setStatus,
+    setProjetoId
 ) {
     await api.get(`/tarefas/${id}`)
         .then((resposta) => {
             if (resposta.status === 200) {
-                // atributos de tarefa
+                setTitulo(resposta.data.titulo);
+                setDataCriacao(resposta.data.dataCriacao);
+                setDataConclusao(resposta.data.dataConclusao);
+                setPrioridade(resposta.data.prioridade);
+                setStatus(resposta.data.status);
+                setProjetoId(resposta.data.projeto?.id);
             }
         })
         .catch((erro) => {

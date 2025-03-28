@@ -30,7 +30,7 @@ export async function listarProjetos(setProjetos) {
     await api.get('/projetos')
         .then((resposta) => {
             if (resposta.status === 200) {
-                setProjetos(resposta.data.content)
+                setProjetos(resposta.data.content);
             }
         })
         .catch((erro) => {
@@ -41,12 +41,19 @@ export async function listarProjetos(setProjetos) {
 
 export async function obterProjetoPeloId(
     id,
-    setNome
+    setNome,
+    setDescricao,
+    setResponsavelId, 
+    setTarefas
 ) {
     await api.get(`/projetos/${id}`)
         .then((resposta) => {
             if (resposta.status === 200) {
-                // atributos de projeto
+                console.log(resposta.data)
+                setNome(resposta.data.nome);
+                setDescricao(resposta.data.descricao);
+                setResponsavelId(resposta.data.responsavel?.id);
+                setTarefas(resposta.data.tarefas);
             }
         })
         .catch((erro) => {
