@@ -5,6 +5,7 @@ import Modal from "../../../componentes/Modal";
 import { useNavigate, useParams } from "react-router-dom";
 import { atualizarProjeto, obterProjetoPeloId, salvarProjeto } from "../../../servicos/projetos";
 import { listarUsuarios } from "../../../servicos/usuarios";
+import { excluirTarefaPeloId } from "../../../servicos/tarefas";
 
 function ProjetoForm() {
     const navigate = useNavigate();
@@ -15,7 +16,9 @@ function ProjetoForm() {
     const [responsavelId, setResponsavelId] = useState("");
     const [tarefas, setTarefas] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
-    const [exibirModal, setExibirModal] = useState(false);
+    const [tarefaParaExcluir, setTarefaParaExcluir] = useState({});
+    const [exibirModalSalvar, setExibirModalSalvar] = useState(false);
+    const [exibirModalExcluir, setExibirModalExcluir] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -39,9 +42,9 @@ function ProjetoForm() {
         console.log(dadosProjeto);
 
         if (id) {
-            await atualizarProjeto(id, dadosProjeto, setExibirModal);
+            await atualizarProjeto(id, dadosProjeto, setExibirModalSalvar);
         } else {
-            await salvarProjeto(dadosProjeto, setExibirModal);
+            await salvarProjeto(dadosProjeto, setExibirModalSalvar);
         }
     }
 
@@ -50,25 +53,25 @@ function ProjetoForm() {
     }
 
     const confirmarCadastro = () => {
-        setExibirModal(false);
+        setExibirModalSalvar(false);
         navigate("/projetos");
     }
 
     const confirmarExclusao = (id) => {
-        setExibirModal(true);
-        // setTarefaParaExcluir(id);
+        setExibirModalExcluir(true);
+        setTarefaParaExcluir(id);
     }
 
     const cancelarExclusao = () => {
-        setExibirModal(false);
-        // setTarefaParaExcluir({});
+        setExibirModalExcluir(false);
+        setTarefaParaExcluir({});
     }
 
     const excluirTarefa = async () => {
-        // await excluirTarefaPeloId(tarefaParaExcluir, setExibirModal);
+        await excluirTarefaPeloId(tarefaParaExcluir, setExibirModalExcluir);
 
-        // setTarefaParaExcluir({});
-        // setTarefas(tarefa.filter(u => u.id !== tarefaParaExcluir));
+        setTarefaParaExcluir({});
+        setTarefas(tarefas.filter(t => t.id !== tarefaParaExcluir));
     }
 
     return (
@@ -140,9 +143,10 @@ function ProjetoForm() {
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Descricao</th>
-                                <th scope="col">Responsavel</th>
+                                <th scope="col">Titulo</th>
+                                <th scope="col">Prioridade</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Atribuido para</th>
                                 <th scope="col">Opcoes</th>
                             </tr>
                         </thead>
@@ -150,9 +154,10 @@ function ProjetoForm() {
                             {tarefas?.map((tarefa) => (
                                 <tr key={tarefa.id}>
                                     <th scope="row">{tarefa.id}</th>
-                                    <td>{tarefa.nome}</td>
-                                    <td>{tarefa.descricao}</td>
-                                    <td>{tarefa.responsavel?.nome}</td>
+                                    <td>{tarefa.titulo}</td>
+                                    <td>{tarefa.prioridade}</td>
+                                    <td>{tarefa.status}</td>
+                                    <td>{tarefa.usuario?.nome}</td>
                                     <td>
                                         <div className="btn-group" role="group">
                                             <button
@@ -177,12 +182,23 @@ function ProjetoForm() {
                     </table>
                 </section>
 
-                {exibirModal && (
+                {exibirModalSalvar && (
                     <Modal
                         titulo={"Confirmacao"}
                         texto={`Projeto ${id ? 'atualizado' : 'cadastrado'} com sucesso!`}
                         txtBtn01={"OK"}
                         onClickBtn01={confirmarCadastro}
+                    />
+                )}
+
+                {exibirModalExcluir && (
+                    <Modal
+                        titulo={"Confirmacao de Exclusao"}
+                        texto={"Tem certeza que deseja excluir esta tarefa?"}
+                        txtBtn01={"Sim, excluir."}
+                        onClickBtn01={excluirTarefa}
+                        txtBtn02={"Cancelar"}
+                        onClickBtn02={cancelarExclusao}
                     />
                 )}
             </section>
