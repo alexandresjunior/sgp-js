@@ -106,7 +106,7 @@ function UsuarioForm() {
                                 type="password"
                                 className="form-control"
                                 id="senha"
-                                placeholder="Digite aqui a sua senha"
+                                placeholder="Nao compartilhe com ninguem."
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
                                 required
