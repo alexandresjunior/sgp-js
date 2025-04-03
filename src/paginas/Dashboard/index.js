@@ -9,11 +9,12 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { LISTA_PROJETOS } from "../../mocks/projetos";
-import { LISTA_TAREFAS } from "../../mocks/tarefas";
 import Cabecalho from "../../componentes/Cabecalho";
 import Rodape from "../../componentes/Rodape";
-import { LISTA_USUARIOS } from "../../mocks/usuarios";
+import { useEffect, useState } from "react";
+import { listarUsuarios } from "../../servicos/usuarios";
+import { listarProjetos } from "../../servicos/projetos";
+import { listarTarefas } from "../../servicos/tarefas";
 
 ChartJS.register(
     CategoryScale,
@@ -26,7 +27,17 @@ ChartJS.register(
 );
 
 function Dashboard() {
-    const labels = LISTA_PROJETOS.map((projeto) => projeto.nome);
+    const [usuarios, setUsuarios] = useState([]);
+    const [projetos, setProjetos] = useState([]);
+    const [tarefas, setTarefas] = useState([]);
+
+    useEffect(() => {
+        listarUsuarios(setUsuarios);
+        listarProjetos(setProjetos);
+        listarTarefas(setTarefas);
+    }, []);
+
+    const labels = projetos?.map((projeto) => projeto.nome);
 
     const optionsVerticalBar = {
         responsive: true,
@@ -62,29 +73,29 @@ function Dashboard() {
         datasets: [
             {
                 label: 'PENDENTE',
-                data: [
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'PENDENTE' && tarefa.projeto.nome === labels[0])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'PENDENTE' && tarefa.projeto.nome === labels[1])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'PENDENTE' && tarefa.projeto.nome === labels[2])).length
-                ],
+                data: projetos?.map((projeto) => {
+                    return tarefas?.filter((tarefa) => (
+                        tarefa.status === 'PENDENTE' && tarefa.projeto.id === projeto.id
+                    )).length
+                }),
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
                 label: 'FAZENDO',
-                data: [
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'FAZENDO' && tarefa.projeto.nome === labels[0])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'FAZENDO' && tarefa.projeto.nome === labels[1])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'FAZENDO' && tarefa.projeto.nome === labels[2])).length
-                ],
+                data: projetos?.map((projeto) => {
+                    return tarefas?.filter((tarefa) => (
+                        tarefa.status === 'FAZENDO' && tarefa.projeto.id === projeto.id
+                    )).length
+                }),
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
             {
                 label: 'FINALIZADA',
-                data: [
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'FINALIZADA' && tarefa.projeto.nome === labels[0])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'FINALIZADA' && tarefa.projeto.nome === labels[1])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.status === 'FINALIZADA' && tarefa.projeto.nome === labels[2])).length
-                ],
+                data: projetos?.map((projeto) => {
+                    return tarefas?.filter((tarefa) => (
+                        tarefa.status === 'FINALIZADA' && tarefa.projeto.id === projeto.id
+                    )).length
+                }),
                 backgroundColor: 'rgba(53, 235, 90, 0.5)',
             }
         ],
@@ -95,29 +106,29 @@ function Dashboard() {
         datasets: [
             {
                 label: 'ALTA',
-                data: [
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'ALTA' && tarefa.projeto.nome === labels[0])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'ALTA' && tarefa.projeto.nome === labels[1])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'ALTA' && tarefa.projeto.nome === labels[2])).length
-                ],
+                data: projetos?.map((projeto) => {
+                    return tarefas?.filter((tarefa) => (
+                        tarefa.prioridade === 'ALTA' && tarefa.projeto.id === projeto.id
+                    )).length
+                }),
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
                 label: 'MEDIA',
-                data: [
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'MEDIA' && tarefa.projeto.nome === labels[0])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'MEDIA' && tarefa.projeto.nome === labels[1])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'MEDIA' && tarefa.projeto.nome === labels[2])).length
-                ],
+                data: projetos?.map((projeto) => {
+                    return tarefas?.filter((tarefa) => (
+                        tarefa.prioridade === 'MEDIA' && tarefa.projeto.id === projeto.id
+                    )).length
+                }),
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
             {
                 label: 'BAIXA',
-                data: [
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'BAIXA' && tarefa.projeto.nome === labels[0])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'BAIXA' && tarefa.projeto.nome === labels[1])).length,
-                    LISTA_TAREFAS.filter((tarefa) => (tarefa.prioridade === 'BAIXA' && tarefa.projeto.nome === labels[2])).length
-                ],
+                data: projetos?.map((projeto) => {
+                    return tarefas?.filter((tarefa) => (
+                        tarefa.prioridade === 'BAIXA' && tarefa.projeto.id === projeto.id
+                    )).length
+                }),
                 backgroundColor: 'rgba(53, 235, 90, 0.5)',
             },
         ],
@@ -129,8 +140,8 @@ function Dashboard() {
             {
                 label: 'No. Usuarios',
                 data: [
-                    LISTA_USUARIOS.filter((usuario) => (usuario.status === 'ATIVO')).length,
-                    LISTA_USUARIOS.filter((usuario) => (usuario.status === 'INATIVO')).length,
+                    usuarios?.filter((usuario) => (usuario.status === 'ATIVO')).length,
+                    usuarios?.filter((usuario) => (usuario.status === 'INATIVO')).length,
                 ],
                 backgroundColor: [
                     'rgba(17, 255, 0, 0.2)',
@@ -155,9 +166,9 @@ function Dashboard() {
                             />
                         </div>
                         <div className="col-md-6 col-12">
-                            <Bar 
-                                options={optionsHorizontalBar} 
-                                data={dataHorizontalBar} 
+                            <Bar
+                                options={optionsHorizontalBar}
+                                data={dataHorizontalBar}
                                 width={850}
                                 height={350}
                             />
